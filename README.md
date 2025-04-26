@@ -2,4 +2,5 @@
 
 
 javac *.java 
+
 java T1Stage1 config.txt
