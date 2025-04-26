@@ -1,0 +1,2 @@
+publicador GPS_1 Posiciones_1
+suscriptor Registrador Registrador_1 Posiciones_1 trayectoria.txt
