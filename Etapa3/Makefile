@@ -24,7 +24,7 @@ $(CLASSES): $(SOURCES)
 
 # Ejecutar el programa
 run: all
-	java -cp $(BIN_DIR) T1Stage2 config.txt
+	java -cp $(BIN_DIR) T1Stage3 config.txt
 
 # Limpiar archivos generados (.class) y archivos de salida
 clean:
