@@ -1,0 +1,1 @@
+Monitor_1 Posiciones_1 600 800
