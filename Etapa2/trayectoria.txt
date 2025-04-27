@@ -1,0 +1,2 @@
+Registrador_1,Posiciones_1,20,150
+Registrador_1,Posiciones_1,20,20
