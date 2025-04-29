@@ -20,10 +20,10 @@ $ make clean  # Limpiar archivos .class
 
 ## Integrantes
 
-Bastián Salomon 201973119-K
-Joaquín Silva 202104566-K
-Fernando Salgado 202173580-1
-Sebastián Sepúlveda 202104508-2
+- Bastián Salomon 201973119-K
+- Joaquín Silva 202104566-K
+- Fernando Salgado 202173580-1
+- Sebastián Sepúlveda 202104508-2
 
 ## Instrucciones de Ejecución
 
