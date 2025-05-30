@@ -16,7 +16,6 @@ public class CarTracker extends Subscriber {
     public CarTracker(String name, String topicName) {
         super(name, topicName);
         stage = new Stage();
-        //??
         car = new Circle(5, Color.RED);
         telemetry = new Label(String.format(Locale.US, "t=%.1f   x=%.2f   y=%.2f", 0.0, 0.0, 0.0));
 
@@ -34,7 +33,6 @@ public class CarTracker extends Subscriber {
 
     @Override
     public void update(String message) {
-         //??
         String[] parts = message.split("\\s+");
         try {
             double t = Double.parseDouble(parts[0]);
