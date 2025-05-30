@@ -13,6 +13,7 @@ import javafx.geometry.Pos;
 import java.io.File;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.Locale;
 
 public class PubSubsPatternSimulator extends Application {
     private VBox vBoxLeft, vBoxRight;
@@ -48,7 +49,6 @@ public class PubSubsPatternSimulator extends Application {
         primaryStage.setResizable(true);
 // Handle menu actions
         menuItemVideoPub.setOnAction(e -> addVideoPub());
-        //??
         menuItemVideoSubs.setOnAction(e -> addVideoSubs());
         menuItemGPSPub.setOnAction(e -> addGPSCarPub(this.primaryStage));
         menuItemGPSSubs.setOnAction(e -> addCarSubs());
@@ -72,7 +72,6 @@ public class PubSubsPatternSimulator extends Application {
     }
 
     private void addGPSCarPub(Stage stage) {
-        //??
         String name = getInputSting("GPS Publisher Name");
         String topic = getInputSting("GPS Publisher Topic");
         FileChooser chooser = new FileChooser();
@@ -81,6 +80,7 @@ public class PubSubsPatternSimulator extends Application {
         if (file == null) return;
         try {
             Scanner scanner = new Scanner(file);
+            scanner.useLocale(Locale.US);
             GPSCarPublisher gpsPub = new GPSCarPublisher(name, broker, topic, scanner);
             vBoxLeft.getChildren().add(gpsPub.getView());
         } catch (Exception ex) {
@@ -92,12 +92,11 @@ public class PubSubsPatternSimulator extends Application {
         String name = getInputSting("Video Subscriber Name");
         String topic =getInputSting("Video Subscriber Topic");
         VideoFollower videoFollower = new VideoFollower(name, topic);
-        if (broker.subscribe(videoFollower))  // to check that topic already exists
+        if (broker.subscribe(videoFollower))
             vBoxRight.getChildren().add(videoFollower.getView());
     }
 
     private void addCarSubs() {
-        //??
         String name = getInputSting("GPS Subscriber Name");
         String topic = getInputSting("GPS Subscriber Topic");
         CarTracker ct = new CarTracker(name, topic);
