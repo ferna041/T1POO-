@@ -17,7 +17,6 @@ public class GPSCarPublisher extends Publisher {
         view.getChildren().addAll(new Label(name + "->" + topicName+":"), GPS);
         GPSfile = scanner;
         timeline = new Timeline(new KeyFrame(Duration.millis(1000), e -> reportPosition()));
-         //??
         if (GPSfile.hasNextDouble()) {
             time_i = GPSfile.nextDouble();
             xi = GPSfile.nextDouble();
@@ -38,7 +37,6 @@ public class GPSCarPublisher extends Publisher {
     }
 
     private void reportPosition() {
-        //??
         if (time < time_f) {
             time += 1;
             double frac = (time - time_i) / (time_f - time_i);
@@ -48,7 +46,6 @@ public class GPSCarPublisher extends Publisher {
             publishNewEvent(msg);
             GPS.setText(msg);
         } else {
-            // Inicia siguiente segmento
             xi = xf;
             yi = yf;
             time_i = time_f;
