@@ -21,7 +21,7 @@ Este proyecto está dividido en 4 etapas desarrolladas de manera incremental (ca
 
 Se debe clonar el repositorio en IntelliJ IDEA, luego dirijirse a la carpeta T2. En esta carpeta se encuentran las etapas divididas en carpetas.
 
-IMPORTANTE: para ejecutar correctamente cada etapa, se deben ejecutar los scripts de Maven correspondientes. Esto se logra dando click derecho al archivo pom.xml, luego clickear la opción que dice "Add as maven project".
+Para ejecutar correctamente cada etapa, se deben ejecutar los scripts de Maven correspondientes. Esto se logra dando click derecho al archivo pom.xml, luego clickear la opción que dice "Add as maven project".
 Esto es por cada carpeta de etapa.
 
 Luego, simplemente ejecutar el programa clickeando la pestaña RUN. Con esto se levanta la interfaz gráfica.
