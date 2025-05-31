@@ -37,3 +37,9 @@ Luego, simplemente ejecutar el programa clickeando la pestaña RUN. Con esto se 
       - 10.0 50.0 45.0
 
 - En caso de errores, verifique los permisos de los archivos y la correcta instalación de Java y JavaFX.
+
+## Javadoc
+
+La documentación Javadoc fue generada mediante las herramientas de Intellij para generar el Javadoc, donde se generó un scope personalizado para generar documentación de los archivos solicitados como el siguiente:
+
+src:com.example.t2.Publisher||src:com.example.t2.GPSCarPublisher||src:com.example.t2.Component||src:com.example.t2.Broker||src:com.example.t2.Topic||src:com.example.t2.Subscriber&&!file:module-info.java
