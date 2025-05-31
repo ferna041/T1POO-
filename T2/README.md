@@ -43,3 +43,5 @@ Luego, simplemente ejecutar el programa clickeando la pestaña RUN. Con esto se 
 La documentación Javadoc fue generada mediante las herramientas de Intellij para generar el Javadoc, donde se generó un scope personalizado para generar documentación de los archivos solicitados como el siguiente:
 
 src:com.example.t2.Publisher||src:com.example.t2.GPSCarPublisher||src:com.example.t2.Component||src:com.example.t2.Broker||src:com.example.t2.Topic||src:com.example.t2.Subscriber&&!file:module-info.java
+
+Se debe indicar además la carpeta donde se quiere generar la documentación javadoc.
