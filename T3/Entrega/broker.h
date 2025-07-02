@@ -1,24 +1,20 @@
 #ifndef BROKER_H
 #define BROKER_H
 
+#include <QMap>
 #include <QString>
-#include <map>
 #include "topic.h"
 
 class Broker {
 public:
     static Broker& getInstance();
-    
-    Topic* getTopic(const QString& topicName);
-    void createTopic(const QString& topicName);
+    Topic* getTopic(const QString& name);
+    void addTopic(Topic* topic);
+    void removeTopic(const QString& name);
 
 private:
     Broker() = default;
-    ~Broker();
-    Broker(const Broker&) = delete;
-    Broker& operator=(const Broker&) = delete;
-    
-    std::map<QString, Topic*> topics;
+    QMap<QString, Topic*> topics;
 };
 
 #endif

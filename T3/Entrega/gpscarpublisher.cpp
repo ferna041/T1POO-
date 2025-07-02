@@ -1,24 +1,30 @@
 #include "gpscarpublisher.h"
 #include "broker.h"
-#include <QFile>
+#include "publisher.h"
+#include <QFileDialog>
 #include <QTextStream>
-#include <QFileInfo>
 #include <QDebug>
-#include <QRegularExpression>
+#include <QInputDialog>
 
 GPSCarPublisher::GPSCarPublisher(QObject* parent)
-    : QObject(parent), Publisher("GPSCarPublisher", Broker::getInstance().getTopic("gps"))
-    , timer(nullptr), currentTime(0), maxTime(0)
+    : QObject(parent), currentTimeIndex(0), simulationTime(0), isRunning(false)
 {
+    publisher = new Publisher("GPSCarPublisher", Broker::getInstance().getTopic("GPS"));
     timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &GPSCarPublisher::publishCurrentPosition);
-    timer->setInterval(1000); // 1 segundo
+    connect(timer, &QTimer::timeout, this, &GPSCarPublisher::updatePosition);
 }
 
-bool GPSCarPublisher::loadPositionFile(const QString& fileName) {
-    QFile file(fileName);
+GPSCarPublisher::~GPSCarPublisher()
+{
+    delete publisher;
+}
+
+bool GPSCarPublisher::loadPositionFile(const QString& filename)
+{
+    if (filename.isEmpty()) return false;
+    
+    QFile file(filename);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug() << "Error: No se pudo abrir el archivo" << fileName;
         return false;
     }
     
@@ -27,110 +33,84 @@ bool GPSCarPublisher::loadPositionFile(const QString& fileName) {
     
     while (!in.atEnd()) {
         QString line = in.readLine().trimmed();
-        if (line.isEmpty() || line.startsWith("#")) {
-            continue; // Ignorar líneas vacías y comentarios
-        }
+        if (line.isEmpty()) continue;
         
-        QStringList parts = line.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
+        QStringList parts = line.split(' ', Qt::SkipEmptyParts);
         if (parts.size() >= 3) {
-            bool timeOk, xOk, yOk;
-            double time = parts[0].toDouble(&timeOk);
-            double x = parts[1].toDouble(&xOk);
-            double y = parts[2].toDouble(&yOk);
-            
-            if (timeOk && xOk && yOk) {
-                positions.append(GPSPosition(time, x, y));
-                if (time > maxTime) {
-                    maxTime = static_cast<int>(time);
-                }
-            }
+            Position pos;
+            pos.time = parts[0].toInt();
+            pos.x = parts[1].toDouble();
+            pos.y = parts[2].toDouble();
+            positions.append(pos);
         }
     }
     
     file.close();
-    
-    if (positions.isEmpty()) {
-        qDebug() << "Error: No se encontraron posiciones válidas en el archivo";
-        return false;
-    }
-    
-    // Ordenar por tiempo (por si acaso)
-    std::sort(positions.begin(), positions.end(), 
-              [](const GPSPosition& a, const GPSPosition& b) {
-                  return a.time < b.time;
-              });
-    
-    qDebug() << "Cargadas" << positions.size() << "posiciones GPS desde" << fileName;
-    qDebug() << "Tiempo máximo:" << maxTime << "segundos";
-    
-    return true;
+    return !positions.isEmpty();
 }
 
-void GPSCarPublisher::startSimulation() {
-    if (positions.isEmpty()) {
-        qDebug() << "Error: No hay posiciones cargadas";
-        return;
-    }
+void GPSCarPublisher::startSimulation()
+{
+    if (positions.isEmpty()) return;
     
-    currentTime = 0;
-    timer->start();
-    qDebug() << "Simulación GPS iniciada";
+    currentTimeIndex = 0;
+    simulationTime = positions.first().time;
+    isRunning = true;
+    timer->start(1000);
 }
 
-void GPSCarPublisher::stopSimulation() {
-    if (timer) {
-        timer->stop();
-        qDebug() << "Simulación GPS detenida";
-    }
+void GPSCarPublisher::stopSimulation()
+{
+    timer->stop();
+    isRunning = false;
 }
 
-void GPSCarPublisher::publishCurrentPosition() {
-    if (currentTime > maxTime) {
+void GPSCarPublisher::updatePosition()
+{
+    if (positions.isEmpty() || !isRunning) return;
+    
+    Position currentPos = interpolatePosition(simulationTime);
+    
+    QString message = QString("Tiempo: %1, X: %2, Y: %3")
+                     .arg(simulationTime)
+                     .arg(currentPos.x, 0, 'f', 2)
+                     .arg(currentPos.y, 0, 'f', 2);
+    
+    publisher->publish(message);
+    
+    simulationTime++;
+    
+    if (simulationTime > positions.last().time) {
         stopSimulation();
-        qDebug() << "Simulación GPS completada";
-        return;
-    }
-    
-    QPair<double, double> pos = interpolatePosition(currentTime);
-    QString message = formatPositionMessage(currentTime, pos.first, pos.second);
-    
-    publish(message);
-    qDebug() << "Posición publicada:" << message;
-    
-    currentTime++;
-}
-
-QPair<double, double> GPSCarPublisher::interpolatePosition(double time) {
-    // Buscar los dos puntos entre los cuales interpolar
-    for (int i = 0; i < positions.size() - 1; i++) {
-        const GPSPosition& p1 = positions[i];
-        const GPSPosition& p2 = positions[i + 1];
-        
-        if (time >= p1.time && time <= p2.time) {
-            // Interpolación lineal
-            if (p2.time == p1.time) {
-                return QPair<double, double>(p1.x, p1.y);
-            }
-            
-            double factor = (time - p1.time) / (p2.time - p1.time);
-            double x = p1.x + factor * (p2.x - p1.x);
-            double y = p1.y + factor * (p2.y - p1.y);
-            
-            return QPair<double, double>(x, y);
-        }
-    }
-    
-    // Si está fuera de rango, devolver la primera o última posición
-    if (time < positions.first().time) {
-        return QPair<double, double>(positions.first().x, positions.first().y);
-    } else {
-        return QPair<double, double>(positions.last().x, positions.last().y);
     }
 }
 
-QString GPSCarPublisher::formatPositionMessage(double time, double x, double y) {
-    return QString("Tiempo: %1s, X: %2, Y: %3")
-           .arg(time, 0, 'f', 0)
-           .arg(x, 0, 'f', 2)
-           .arg(y, 0, 'f', 2);
+Position GPSCarPublisher::interpolatePosition(int currentTime)
+{
+    if (positions.isEmpty()) return {0, 0.0, 0.0};
+    
+    int i = 0;
+    while (i < positions.size() - 1 && positions[i + 1].time <= currentTime) {
+        i++;
+    }
+    
+    if (i >= positions.size() - 1) {
+        return positions.last();
+    }
+    
+    if (currentTime <= positions[i].time) {
+        return positions[i];
+    }
+    
+    Position p1 = positions[i];
+    Position p2 = positions[i + 1];
+    
+    double factor = double(currentTime - p1.time) / (p2.time - p1.time);
+    
+    Position result;
+    result.time = currentTime;
+    result.x = p1.x + factor * (p2.x - p1.x);
+    result.y = p1.y + factor * (p2.y - p1.y);
+    
+    return result;
 }

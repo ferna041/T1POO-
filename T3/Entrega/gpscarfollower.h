@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QWidget>
 #include <QLabel>
-#include <QString>
+#include <QPaintEvent>
 
 class Subscriber;
 
@@ -25,13 +25,27 @@ private slots:
 private:
     QWidget* trackingWindow;
     QLabel* infoLabel;
-    QLabel* positionLabel;
     double currentX;
     double currentY;
     QString currentInfo;
     Subscriber* subscriber;
-    
-    void parsePositionMessage(const QString& message, QString& info, double& x, double& y);
+};
+
+class TrackingWidget : public QWidget {
+    Q_OBJECT
+public:
+    TrackingWidget(QWidget* parent = nullptr);
+    void updatePosition(double x, double y);
+
+protected:
+    void paintEvent(QPaintEvent* event) override;
+
+private:
+    double carX;
+    double carY;
+    static const int WINDOW_WIDTH = 600;
+    static const int WINDOW_HEIGHT = 500;
+    static const int CAR_SIZE = 10;
 };
 
 #endif

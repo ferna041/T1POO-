@@ -1,16 +1,16 @@
 #include "gpscarfollower.h"
 #include "broker.h"
 #include "subscriber.h"
+#include <QWidget>
 #include <QVBoxLayout>
 #include <QLabel>
-#include <QFont>
-#include <QDebug>
+#include <QPainter>
 #include <QRegularExpression>
 
 class GPSSubscriber : public Subscriber {
 public:
     GPSSubscriber(GPSCarFollower* follower) 
-        : Subscriber("GPSCarFollower", Broker::getInstance().getTopic("gps"))
+        : Subscriber("GPSCarFollower", Broker::getInstance().getTopic("GPS"))
         , follower(follower) {}
     
     void update(const QString& message) override {
@@ -24,94 +24,107 @@ private:
 };
 
 GPSCarFollower::GPSCarFollower(QObject* parent)
-    : QObject(parent), trackingWindow(nullptr), currentX(0), currentY(0)
+    : QObject(parent), currentX(0), currentY(0)
 {
+    trackingWindow = nullptr;
     subscriber = new GPSSubscriber(this);
-    
-    // Conectar señal interna para actualización
     connect(this, &GPSCarFollower::positionUpdated, this, &GPSCarFollower::onPositionUpdated);
 }
 
 GPSCarFollower::~GPSCarFollower()
 {
     delete subscriber;
-    if (trackingWindow) {
-        trackingWindow->deleteLater();
+}
+
+void GPSCarFollower::onMessageReceived(const QString& message)
+{
+    QRegularExpression regex(R"(Tiempo:\s*(\d+),\s*X:\s*([\d.-]+),\s*Y:\s*([\d.-]+))");
+    QRegularExpressionMatch match = regex.match(message);
+    
+    if (match.hasMatch()) {
+        currentX = match.captured(2).toDouble();
+        currentY = match.captured(3).toDouble();
+        currentInfo = message;
+        
+        emit positionUpdated(currentInfo, currentX, currentY);
     }
 }
 
 void GPSCarFollower::showTrackingWindow()
 {
     if (!trackingWindow) {
-        trackingWindow = new QWidget;
-        trackingWindow->setWindowTitle("Seguimiento de Posición GPS");
-        trackingWindow->resize(400, 200);
+        trackingWindow = new QWidget();
+        trackingWindow->setWindowTitle("Seguidor de Posición del Móvil");
+        trackingWindow->resize(600, 550);
         
         QVBoxLayout* layout = new QVBoxLayout(trackingWindow);
         
-        // Información principal
+        TrackingWidget* trackingWidget = new TrackingWidget();
+        layout->addWidget(trackingWidget);
+        
         infoLabel = new QLabel("Esperando datos GPS...");
-        QFont infoFont = infoLabel->font();
-        infoFont.setPointSize(12);
-        infoLabel->setFont(infoFont);
         infoLabel->setAlignment(Qt::AlignCenter);
-        infoLabel->setStyleSheet("background-color: #f0f0f0; padding: 20px; border: 1px solid #ccc; margin: 10px;");
+        infoLabel->setStyleSheet("padding: 10px; background-color: #f0f0f0; border: 1px solid #ccc;");
         layout->addWidget(infoLabel);
         
-        // Posición detallada
-        positionLabel = new QLabel("Coordenadas: X = 0.00, Y = 0.00");
-        QFont posFont = positionLabel->font();
-        posFont.setPointSize(11);
-        posFont.setBold(true);
-        positionLabel->setFont(posFont);
-        positionLabel->setAlignment(Qt::AlignCenter);
-        positionLabel->setStyleSheet("background-color: #e8f4f8; padding: 15px; border: 1px solid #b0d4e3; margin: 10px;");
-        layout->addWidget(positionLabel);
+        connect(this, &GPSCarFollower::positionUpdated, 
+                [trackingWidget](const QString&, double x, double y) {
+                    trackingWidget->updatePosition(x, y);
+                });
     }
     
     trackingWindow->show();
     trackingWindow->raise();
-    trackingWindow->activateWindow();
 }
 
-void GPSCarFollower::onMessageReceived(const QString& message) {
-    QString info;
-    double x, y;
-    parsePositionMessage(message, info, x, y);
-    
-    currentInfo = info;
-    currentX = x;
-    currentY = y;
-    
-    emit positionUpdated(info, x, y);
-}
-
-void GPSCarFollower::onPositionUpdated(const QString& info, double x, double y) {
-    if (trackingWindow && infoLabel && positionLabel) {
+void GPSCarFollower::onPositionUpdated(const QString& info, double x, double y)
+{
+    if (infoLabel) {
         infoLabel->setText(info);
-        positionLabel->setText(QString("Coordenadas: X = %1, Y = %2")
-                              .arg(x, 0, 'f', 2)
-                              .arg(y, 0, 'f', 2));
     }
 }
 
-void GPSCarFollower::parsePositionMessage(const QString& message, QString& info, double& x, double& y) {
-    // Parsear mensaje en formato: "Tiempo: Xs, X: xx.xx, Y: yy.yy"
-    info = message;
-    x = 0.0;
-    y = 0.0;
+TrackingWidget::TrackingWidget(QWidget* parent)
+    : QWidget(parent), carX(200), carY(150)
+{
+    setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+    setStyleSheet("background-color: white; border: 1px solid #ccc;");
+}
+
+void TrackingWidget::updatePosition(double x, double y)
+{
+    double scaleX = 2.0;
+    double scaleY = 2.0;
     
-    QRegularExpression regexX("X: ([\\d.-]+)");
-    QRegularExpression regexY("Y: ([\\d.-]+)");
+    carX = WINDOW_WIDTH / 2 + (x * scaleX);
+    carY = WINDOW_HEIGHT / 2 - (y * scaleY);
     
-    QRegularExpressionMatch matchX = regexX.match(message);
-    QRegularExpressionMatch matchY = regexY.match(message);
+    carX = qBound(CAR_SIZE/2.0, carX, WINDOW_WIDTH - CAR_SIZE/2.0);
+    carY = qBound(CAR_SIZE/2.0, carY, WINDOW_HEIGHT - CAR_SIZE/2.0);
     
-    if (matchX.hasMatch()) {
-        x = matchX.captured(1).toDouble();
+    update(); 
+}
+
+void TrackingWidget::paintEvent(QPaintEvent* event)
+{
+    Q_UNUSED(event)
+    
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
+    
+    painter.setPen(QPen(Qt::lightGray, 1, Qt::DotLine));
+    for (int i = 0; i < WINDOW_WIDTH; i += 20) {
+        painter.drawLine(i, 0, i, WINDOW_HEIGHT);
+    }
+    for (int i = 0; i < WINDOW_HEIGHT; i += 20) {
+        painter.drawLine(0, i, WINDOW_WIDTH, i);
     }
     
-    if (matchY.hasMatch()) {
-        y = matchY.captured(1).toDouble();
-    }
+    painter.setPen(QPen(Qt::black, 2));
+    painter.setBrush(QBrush(Qt::red));
+    painter.drawEllipse(QPointF(carX, carY), CAR_SIZE, CAR_SIZE);
+    
+    painter.setPen(QPen(Qt::blue, 1));
+    painter.drawLine(WINDOW_WIDTH/2 - 10, WINDOW_HEIGHT/2, WINDOW_WIDTH/2 + 10, WINDOW_HEIGHT/2);
+    painter.drawLine(WINDOW_WIDTH/2, WINDOW_HEIGHT/2 - 10, WINDOW_WIDTH/2, WINDOW_HEIGHT/2 + 10);
 }

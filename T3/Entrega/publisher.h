@@ -2,16 +2,13 @@
 #define PUBLISHER_H
 
 #include "component.h"
+#include <QString>
 
 class Publisher : public Component {
 public:
     Publisher(const QString& name, Topic* topic);
     virtual ~Publisher() = default;
-    
-    virtual void publish(const QString& message);
-
-protected:
-    void notifySubscribers(const QString& message);
+    void publish(const QString& message);
 };
 
 #endif

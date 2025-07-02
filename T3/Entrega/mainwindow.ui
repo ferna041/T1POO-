@@ -6,12 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
+    <width>1200</width>
     <height>700</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Simulador Patrón Publicador-Suscriptor</string>
+  </property>
+  <property name="styleSheet">
+   <string></string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="mainVerticalLayout">
@@ -96,7 +99,7 @@
            <item>
             <widget class="QLabel" name="fileStatusLabel">
              <property name="text">
-              <string>No hay archivo cargado</string>
+              <string>Ningún archivo cargado</string>
              </property>
              <property name="styleSheet">
               <string>color: gray; font-style: italic;</string>
@@ -104,7 +107,7 @@
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="gpsControlsLayout">
+            <layout class="QHBoxLayout" name="gpsControlLayout">
              <item>
               <widget class="QPushButton" name="startSimButton">
                <property name="text">
@@ -127,18 +130,21 @@
              </item>
             </layout>
            </item>
-           <item>
-            <widget class="QLabel" name="gpsStatusLabel">
-             <property name="text">
-              <string>Esperando archivo...</string>
-             </property>
-             <property name="styleSheet">
-              <string>color: gray; font-style: italic;</string>
-             </property>
-            </widget>
-           </item>
           </layout>
          </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </item>
@@ -159,11 +165,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="videoSubscriberGroup">
+         <widget class="QGroupBox" name="videoFollowerGroup">
           <property name="title">
            <string>Suscriptor de Video</string>
           </property>
-          <layout class="QVBoxLayout" name="videoSubscriberLayout">
+          <layout class="QVBoxLayout" name="videoFollowerLayout">
            <item>
             <widget class="QPushButton" name="videoButton">
              <property name="text">
@@ -172,11 +178,12 @@
              <property name="enabled">
               <bool>false</bool>
              </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>40</height>
-              </size>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="volumeLabel">
+             <property name="text">
+              <string>Control de Volumen:</string>
              </property>
             </widget>
            </item>
@@ -222,42 +229,62 @@
              <property name="alignment">
               <set>Qt::AlignCenter</set>
              </property>
+             <property name="styleSheet">
+              <string>font-weight: bold;</string>
+             </property>
             </widget>
            </item>
           </layout>
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="gpsSubscriberGroup">
+         <widget class="QGroupBox" name="gpsFollowerGroup">
           <property name="title">
            <string>Suscriptor GPS</string>
           </property>
-          <layout class="QVBoxLayout" name="gpsSubscriberLayout">
+          <layout class="QVBoxLayout" name="gpsFollowerLayout">
+           <item>
+            <widget class="QLabel" name="gpsStatusLabel">
+             <property name="text">
+              <string>Estado: Esperando datos GPS</string>
+             </property>
+            </widget>
+           </item>
            <item>
             <widget class="QPushButton" name="showTrackingButton">
              <property name="text">
               <string>Mostrar Ventana de Seguimiento</string>
              </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>40</height>
-              </size>
-             </property>
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="lastPositionLabel">
+            <widget class="QLabel" name="positionInfoLabel">
              <property name="text">
-              <string>Última posición: X=0.00, Y=0.00</string>
+              <string>Posición: No disponible</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
              </property>
              <property name="styleSheet">
-              <string>background-color: #f0f8ff; padding: 5px; border: 1px solid #ccc;</string>
+              <string>padding: 5px; background-color: #f9f9f9; border: 1px solid #ddd;</string>
              </property>
             </widget>
            </item>
           </layout>
          </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </item>
@@ -270,7 +297,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1000</width>
+     <width>1200</width>
      <height>22</height>
     </rect>
    </property>

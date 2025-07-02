@@ -26,11 +26,11 @@ private slots:
     void onUrlEntered();
     void onVideoButtonClicked();
     void onUrlUpdated(const QString& url);
-    void onVolumeChanged(int value);
     void onLoadFileClicked();
     void onStartSimulationClicked();
     void onStopSimulationClicked();
     void onShowTrackingClicked();
+    void onVolumeChanged(int value);
     void onGPSPositionUpdated(const QString& info, double x, double y);
 
 private:
@@ -42,5 +42,4 @@ private:
     QAudioOutput* currentAudioOutput;
     QString currentGPSFile;
 };
-
 #endif

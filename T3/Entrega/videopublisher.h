@@ -2,16 +2,20 @@
 #define VIDEOPUBLISHER_H
 
 #include <QObject>
-#include "publisher.h"
 
-class VideoPublisher : public QObject, public Publisher {
+class Publisher;
+
+class VideoPublisher : public QObject {
     Q_OBJECT
-    
 public:
     VideoPublisher(QObject* parent = nullptr);
-    ~VideoPublisher() = default;
-    
+    ~VideoPublisher();
+
+public slots:
     void publishUrl(const QString& url);
+
+private:
+    Publisher* publisher;
 };
 
 #endif

@@ -2,15 +2,13 @@
 #define TOPIC_H
 
 #include <QString>
-#include <vector>
+#include <QList>
 
 class Subscriber;
 
 class Topic {
 public:
     Topic(const QString& name);
-    ~Topic() = default;
-    
     QString getName() const;
     void addSubscriber(Subscriber* subscriber);
     void removeSubscriber(Subscriber* subscriber);
@@ -18,7 +16,7 @@ public:
 
 private:
     QString name;
-    std::vector<Subscriber*> subscribers;
+    QList<Subscriber*> subscribers;
 };
 
 #endif
