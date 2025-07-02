@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QAudioOutput>
 #include "videopublisher.h"
 #include "videofollower.h"
 
@@ -21,12 +22,15 @@ public:
 
 private slots:
     void onUrlEntered();
+    void onVideoButtonClicked();
     void onUrlUpdated(const QString& url);
+    void onVolumeChanged(int value);
 
 private:
     Ui::MainWindow *ui;
     VideoPublisher* videoPublisher;
     VideoFollower* videoFollower;
+    QAudioOutput* currentAudioOutput;
 };
 
 #endif

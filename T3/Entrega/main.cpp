@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     
     a.setApplicationName("Simulador Publicador-Suscriptor");
-    a.setApplicationVersion("1.0 - Etapa 1");
+    a.setApplicationVersion("1.0 - Etapa 2");
     a.setOrganizationName("ELO329 - USM");
     
     MainWindow w;
