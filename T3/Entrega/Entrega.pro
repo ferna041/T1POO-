@@ -15,7 +15,9 @@ SOURCES += \
     subscriber.cpp \
     topic.cpp \
     videofollower.cpp \
-    videopublisher.cpp
+    videopublisher.cpp \
+    gpscarpublisher.cpp \
+    gpscarfollower.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -25,7 +27,9 @@ HEADERS += \
     subscriber.h \
     topic.h \
     videofollower.h \
-    videopublisher.h
+    videopublisher.h \
+    gpscarpublisher.h \
+    gpscarfollower.h
 
 FORMS += \
     mainwindow.ui

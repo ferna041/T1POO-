@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
-    <height>600</height>
+    <width>1000</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,7 +39,7 @@
         <item>
          <widget class="QLabel" name="publisherLabel">
           <property name="text">
-           <string>Publicador</string>
+           <string>Publicadores</string>
           </property>
           <property name="font">
            <font>
@@ -74,17 +74,71 @@
          </widget>
         </item>
         <item>
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
+         <widget class="QGroupBox" name="gpsPublisherGroup">
+          <property name="title">
+           <string>Publicador GPS</string>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
+          <layout class="QVBoxLayout" name="gpsPublisherLayout">
+           <item>
+            <widget class="QLabel" name="gpsLabel">
+             <property name="text">
+              <string>Archivo de Posiciones:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="loadFileButton">
+             <property name="text">
+              <string>Cargar Archivo GPS</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="fileStatusLabel">
+             <property name="text">
+              <string>No hay archivo cargado</string>
+             </property>
+             <property name="styleSheet">
+              <string>color: gray; font-style: italic;</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="gpsControlsLayout">
+             <item>
+              <widget class="QPushButton" name="startSimButton">
+               <property name="text">
+                <string>Iniciar Simulación</string>
+               </property>
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="stopSimButton">
+               <property name="text">
+                <string>Detener</string>
+               </property>
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QLabel" name="gpsStatusLabel">
+             <property name="text">
+              <string>Esperando archivo...</string>
+             </property>
+             <property name="styleSheet">
+              <string>color: gray; font-style: italic;</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </item>
        </layout>
       </item>
@@ -93,7 +147,7 @@
         <item>
          <widget class="QLabel" name="subscriberLabel">
           <property name="text">
-           <string>Suscriptor</string>
+           <string>Suscriptores</string>
           </property>
           <property name="font">
            <font>
@@ -127,39 +181,16 @@
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="volumeControlLabel">
-             <property name="text">
-              <string>Control de Volumen Global:</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>9</pointsize>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-            </widget>
-           </item>
-           <item>
             <layout class="QHBoxLayout" name="volumeLayout">
              <item>
-              <widget class="QLabel" name="volumeLabel">
+              <widget class="QLabel" name="volumeMinLabel">
                <property name="text">
-                <string>Volumen: 80%</string>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>80</width>
-                 <height>0</height>
-                </size>
+                <string>0%</string>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QSlider" name="volumeSlider">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
                <property name="minimum">
                 <number>0</number>
                </property>
@@ -169,25 +200,64 @@
                <property name="value">
                 <number>80</number>
                </property>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="volumeMaxLabel">
+               <property name="text">
+                <string>100%</string>
+               </property>
               </widget>
              </item>
             </layout>
+           </item>
+           <item>
+            <widget class="QLabel" name="volumeValueLabel">
+             <property name="text">
+              <string>Volumen: 80%</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>
         </item>
         <item>
-         <spacer name="verticalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
+         <widget class="QGroupBox" name="gpsSubscriberGroup">
+          <property name="title">
+           <string>Suscriptor GPS</string>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
+          <layout class="QVBoxLayout" name="gpsSubscriberLayout">
+           <item>
+            <widget class="QPushButton" name="showTrackingButton">
+             <property name="text">
+              <string>Mostrar Ventana de Seguimiento</string>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>40</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lastPositionLabel">
+             <property name="text">
+              <string>Última posición: X=0.00, Y=0.00</string>
+             </property>
+             <property name="styleSheet">
+              <string>background-color: #f0f8ff; padding: 5px; border: 1px solid #ccc;</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </item>
        </layout>
       </item>
@@ -200,7 +270,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>900</width>
+     <width>1000</width>
      <height>22</height>
     </rect>
    </property>

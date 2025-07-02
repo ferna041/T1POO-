@@ -5,6 +5,8 @@
 #include <QAudioOutput>
 #include "videopublisher.h"
 #include "videofollower.h"
+#include "gpscarpublisher.h"
+#include "gpscarfollower.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -25,12 +27,20 @@ private slots:
     void onVideoButtonClicked();
     void onUrlUpdated(const QString& url);
     void onVolumeChanged(int value);
+    void onLoadFileClicked();
+    void onStartSimulationClicked();
+    void onStopSimulationClicked();
+    void onShowTrackingClicked();
+    void onGPSPositionUpdated(const QString& info, double x, double y);
 
 private:
     Ui::MainWindow *ui;
     VideoPublisher* videoPublisher;
     VideoFollower* videoFollower;
+    GPSCarPublisher* gpsPublisher;
+    GPSCarFollower* gpsFollower;
     QAudioOutput* currentAudioOutput;
+    QString currentGPSFile;
 };
 
 #endif
