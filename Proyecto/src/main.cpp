@@ -12,6 +12,19 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    // Configuración de la base de datos
+    DatabaseManager dbManager;
+    if (!dbManager.conectar()) {
+        qDebug() << "Error al conectar a la base de datos.";
+        return -1;
+    }
+    qDebug() << "Conexión a la base de datos exitosa.";
+    // Crear las tablas si no existen
+    if (!dbManager.crearTablas()) {
+        qDebug() << "Error al crear las tablas en la base de datos.";
+        return -1;
+    }
+
     // En la función main, después de la configuración de BD:
     FormularioUsuario *formulario = new FormularioUsuario();
     formulario->show();

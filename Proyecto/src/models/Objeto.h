@@ -14,6 +14,10 @@ class Objeto{
         QDateTime fechaPublicacion;
         int tiempoPrestamo; // en días
     public:
+        // Constructor por defecto
+        Objeto() : id(0), nombre(""), categoria(""), idDueno(0), estado(0), descripcion(""),
+                  fechaPublicacion(QDateTime::currentDateTime()), tiempoPrestamo(0) {}
+        
         Objeto(int id, QString nombre, QString categoria, int idDueno, int estado, QString descripcion, 
                int tiempoPrestamo, QDateTime fechaPublicacion = QDateTime::currentDateTime())
             : id(id), nombre(nombre), categoria(categoria), idDueno(idDueno), estado(estado), descripcion(descripcion),

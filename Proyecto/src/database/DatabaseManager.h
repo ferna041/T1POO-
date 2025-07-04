@@ -49,6 +49,12 @@ class DatabaseManager {
         // Métodos auxiliares para reservas
         bool crearReserva(int idObjeto, int idUsuario, int tiempoPrestamo);
         bool objetoEstaReservado(int idObjeto);
+        bool obtenerReservasPorUsuario(int idUsuario, QList<Reserva>& reservas);
+        bool obtenerObjetoPorId(int idObjeto, Objeto& objeto);
+        bool cancelarReserva(int idReserva);
+        int obtenerUltimoIdReserva();
+        // Método para recrear la base de datos
+        bool recrearBaseDatos();
         // Métodos para manejar notificaciones
         bool obtenerNotificaciones(QList<Notificacion>& notificaciones);
         bool insertarNotificacion(const Notificacion& notificacion);

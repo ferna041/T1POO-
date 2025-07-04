@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1300</width>
+    <height>850</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,114 +17,73 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>-1</x>
-      <y>-1</y>
-      <width>811</width>
-      <height>581</height>
+      <x>0</x>
+      <y>0</y>
+      <width>1300</width>
+      <height>850</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="catalogo">
+     <property name="styleSheet">
+      <string notr="true">QWidget#catalogo {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #f8f9fa, stop: 1 #e9ecef);
+    color: #212529;
+}</string>
+     </property>
      <attribute name="title">
       <string>Catálogo</string>
      </attribute>
-     <widget class="QWidget" name="widgetCatalogo" native="true">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>50</y>
-        <width>781</width>
-        <height>481</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>91</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">font: 700 16pt &quot;Segoe UI&quot;;
-color: rgb(0, 0, 0);</string>
-      </property>
-      <property name="text">
-       <string>Catálogo</string>
-      </property>
-     </widget>
     </widget>
     <widget class="QWidget" name="publicar">
+     <property name="styleSheet">
+      <string notr="true">QWidget#publicar {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #f8f9fa, stop: 1 #e9ecef);
+    color: #212529;
+}</string>
+     </property>
      <attribute name="title">
       <string>Publicar</string>
      </attribute>
-     <widget class="QWidget" name="widgetPublicar" native="true">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>50</y>
-        <width>781</width>
-        <height>491</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>151</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(0, 0, 0);
-font: 700 16pt &quot;Segoe UI&quot;;</string>
-      </property>
-      <property name="text">
-       <string>Publicar Objeto</string>
-      </property>
-     </widget>
     </widget>
     <widget class="QWidget" name="tab_2">
+     <property name="styleSheet">
+      <string notr="true">QWidget#tab_2 {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #f8f9fa, stop: 1 #e9ecef);
+    color: #212529;
+}</string>
+     </property>
      <attribute name="title">
       <string>Mis Objetos</string>
      </attribute>
-     <widget class="QWidget" name="widgetMisObjetos" native="true">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>50</y>
-        <width>781</width>
-        <height>481</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_3">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>121</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">font: 700 16pt &quot;Segoe UI&quot;;
-color: rgb(0, 0, 0);</string>
-      </property>
-      <property name="text">
-       <string>Mis objetos</string>
-      </property>
-     </widget>
     </widget>
-    <widget class="QWidget" name="tab">
+    <widget class="QWidget" name="reservas">
+     <property name="styleSheet">
+      <string notr="true">QWidget#reservas {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #f8f9fa, stop: 1 #e9ecef);
+    color: #212529;
+}</string>
+     </property>
      <attribute name="title">
-      <string>Perfil</string>
+      <string>Mis reservas</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="Notificaciones">
+     <property name="styleSheet">
+      <string notr="true">QWidget#Notificaciones {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #f8f9fa, stop: 1 #e9ecef);
+    color: #212529;
+}</string>
+     </property>
+     <attribute name="title">
+      <string>Notificaciones</string>
      </attribute>
     </widget>
    </widget>
@@ -134,8 +93,8 @@ color: rgb(0, 0, 0);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>17</height>
+     <width>1300</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>

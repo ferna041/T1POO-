@@ -17,8 +17,10 @@ INCLUDEPATH += src \
 SOURCES += \
     src/ui/FormularioObjeto.cpp \
     src/ui/ListaObjetos.cpp \
+    src/ui/ListaReservas.cpp \
     src/ui/ListaUsuarios.cpp \
     src/main.cpp \
+    src/ui/Notificaciones.cpp \
     src/ui/VentanaUsuario.cpp \
     src/ui/mainwindow.cpp \
     src/ui/FormularioUsuario.cpp \
@@ -27,7 +29,9 @@ SOURCES += \
 HEADERS += \
     src/ui/FormularioObjeto.h \
     src/ui/ListaObjetos.h \
+    src/ui/ListaReservas.h \
     src/ui/ListaUsuarios.h \
+    src/ui/Notificaciones.h \
     src/ui/VentanaUsuario.h \
     src/ui/mainwindow.h \
     src/ui/FormularioUsuario.h \
@@ -41,7 +45,9 @@ FORMS += \
     src/ui/FormularioObjeto.ui \
     src/ui/FormularioUsuario.ui \
     src/ui/ListaObjetos.ui \
+    src/ui/ListaReservas.ui \
     src/ui/ListaUsuarios.ui \
+    src/ui/Notificaciones.ui \
     src/ui/VentanaUsuario.ui \
     src/ui/mainwindow.ui
 

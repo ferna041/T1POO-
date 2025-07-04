@@ -7,6 +7,7 @@
 #include <QDir>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QFile>
 
 DatabaseManager::DatabaseManager() {
     // Constructor vacío por ahora
@@ -101,6 +102,7 @@ bool DatabaseManager::crearTablaReservas() {
             fecha_reserva DATETIME DEFAULT CURRENT_TIMESTAMP,
             fecha_inicio DATETIME NOT NULL,
             fecha_fin DATETIME NOT NULL,
+            estado INTEGER DEFAULT 0,
             FOREIGN KEY (id_objeto) REFERENCES objetos(id),
             FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
         )
@@ -332,9 +334,10 @@ bool DatabaseManager::obtenerReservas(QList<Reserva>& reservas) {
             query.value("id").toInt(),
             query.value("id_objeto").toInt(),
             query.value("id_usuario").toInt(),
-            query.value("fecha_reserva").toDateTime(),
             query.value("fecha_inicio").toDateTime(),
-            query.value("fecha_fin").toDateTime()
+            query.value("fecha_fin").toDateTime(),
+            query.value("fecha_reserva").toDateTime(),
+            query.value("estado").toInt()
         );
         reservas.append(reserva);
     }
@@ -343,16 +346,28 @@ bool DatabaseManager::obtenerReservas(QList<Reserva>& reservas) {
 
 bool DatabaseManager::insertarReserva(const Reserva& reserva) {
     QSqlQuery query;
-    query.prepare("INSERT INTO reservas (id_objeto, id_usuario, fecha_reserva, fecha_inicio, fecha_fin) "
-                  "VALUES (:id_objeto, :id_usuario, :fecha_reserva, :fecha_inicio, :fecha_fin)");
+    QString sql = "INSERT INTO reservas (id_objeto, id_usuario, fecha_reserva, fecha_inicio, fecha_fin, estado) "
+                  "VALUES (:id_objeto, :id_usuario, :fecha_reserva, :fecha_inicio, :fecha_fin, :estado)";
+    
+    qDebug() << "SQL a ejecutar:" << sql;
+    qDebug() << "Valores - idObjeto:" << reserva.getIdObjeto() 
+             << "idUsuario:" << reserva.getIdUsuario()
+             << "fechaReserva:" << reserva.getFechaReserva()
+             << "fechaInicio:" << reserva.getFechaInicio()
+             << "fechaFin:" << reserva.getFechaFin()
+             << "estado:" << reserva.getEstado();
+    
+    query.prepare(sql);
     query.bindValue(":id_objeto", reserva.getIdObjeto());
     query.bindValue(":id_usuario", reserva.getIdUsuario());
     query.bindValue(":fecha_reserva", reserva.getFechaReserva());
     query.bindValue(":fecha_inicio", reserva.getFechaInicio());
     query.bindValue(":fecha_fin", reserva.getFechaFin());
+    query.bindValue(":estado", reserva.getEstado());
 
     if (!query.exec()) {
         qDebug() << "Error insertando reserva:" << query.lastError().text();
+        qDebug() << "Query SQL ejecutado:" << query.lastQuery();
         return false;
     }
     return true;
@@ -361,14 +376,15 @@ bool DatabaseManager::insertarReserva(const Reserva& reserva) {
 bool DatabaseManager::actualizarReserva(const Reserva& reserva) {
     QSqlQuery query;
     query.prepare("UPDATE reservas SET id_objeto = :id_objeto, id_usuario = :id_usuario, "
-                  "fecha_reserva = :fecha_reserva, fecha_inicio = :fecha_inicio, fecha_fin = :fecha_fin "
-                  "WHERE id = :id");
+                  "fecha_reserva = :fecha_reserva, fecha_inicio = :fecha_inicio, fecha_fin = :fecha_fin, "
+                  "estado = :estado WHERE id = :id");
     query.bindValue(":id", reserva.getId());
     query.bindValue(":id_objeto", reserva.getIdObjeto());
     query.bindValue(":id_usuario", reserva.getIdUsuario());
     query.bindValue(":fecha_reserva", reserva.getFechaReserva());
     query.bindValue(":fecha_inicio", reserva.getFechaInicio());
     query.bindValue(":fecha_fin", reserva.getFechaFin());
+    query.bindValue(":estado", reserva.getEstado());
 
     if (!query.exec()) {
         qDebug() << "Error actualizando reserva:" << query.lastError().text();
@@ -472,16 +488,66 @@ bool DatabaseManager::crearReserva(int idObjeto, int idUsuario, int tiempoPresta
         return false;
     }
     
+    // Obtener información del objeto y usuarios para las notificaciones
+    Objeto objeto;
+    Usuario usuarioReservante;
+    Usuario usuarioDueno;
+    
+    if (!obtenerObjetoPorId(idObjeto, objeto)) {
+        qDebug() << "Error obteniendo información del objeto";
+        return false;
+    }
+    
+    if (!obtenerUsuarioPorId(idUsuario, usuarioReservante)) {
+        qDebug() << "Error obteniendo información del usuario reservante";
+        return false;
+    }
+    
+    if (!obtenerUsuarioPorId(objeto.getIdDueno(), usuarioDueno)) {
+        qDebug() << "Error obteniendo información del dueño";
+        return false;
+    }
+    
     // Calcular fechas
     QDateTime fechaInicio = QDateTime::currentDateTime();
     QDateTime fechaFin = fechaInicio.addDays(tiempoPrestamo);
     
-    // Crear reserva
-    Reserva nuevaReserva(0, idObjeto, idUsuario, fechaInicio, fechaFin);
+    // Crear reserva con estado activo (0)
+    Reserva nuevaReserva(0, idObjeto, idUsuario, fechaInicio, fechaFin, QDateTime::currentDateTime(), 0);
     
     // Insertar la reserva
     if (!insertarReserva(nuevaReserva)) {
         return false;
+    }
+    
+    // Obtener el ID de la reserva recién creada
+    int idReserva = obtenerUltimoIdReserva();
+    
+    // Crear notificación para el dueño del objeto
+    QString mensajeDueno = QString("Tu objeto '%1' ha sido reservado por %2 hasta el %3")
+                          .arg(objeto.getNombre())
+                          .arg(usuarioReservante.getNombre())
+                          .arg(fechaFin.toString("dd/MM/yyyy"));
+    
+    Notificacion notifDueno(0, Notificacion::SOLICITUD_RECIBIDA, objeto.getIdDueno(), 
+                           idReserva, mensajeDueno, QDateTime::currentDateTime(), false);
+    
+    // Crear notificación para el usuario que reserva
+    QString mensajeReservante = QString("Has reservado el objeto '%1' de %2. Disponible hasta el %3")
+                               .arg(objeto.getNombre())
+                               .arg(usuarioDueno.getNombre())
+                               .arg(fechaFin.toString("dd/MM/yyyy"));
+    
+    Notificacion notifReservante(0, Notificacion::PRESTAMO_CONFIRMADO, idUsuario, 
+                                idReserva, mensajeReservante, QDateTime::currentDateTime(), false);
+    
+    // Insertar las notificaciones
+    if (!insertarNotificacion(notifDueno)) {
+        qDebug() << "Error creando notificación para el dueño";
+    }
+    
+    if (!insertarNotificacion(notifReservante)) {
+        qDebug() << "Error creando notificación para el reservante";
     }
     
     // Actualizar el estado del objeto a "prestado" (estado = 1)
@@ -499,7 +565,7 @@ bool DatabaseManager::crearReserva(int idObjeto, int idUsuario, int tiempoPresta
 
 bool DatabaseManager::objetoEstaReservado(int idObjeto) {
     QSqlQuery query;
-    query.prepare("SELECT COUNT(*) as count FROM reservas WHERE id_objeto = :id_objeto AND fecha_fin > :fecha_actual");
+    query.prepare("SELECT COUNT(*) as count FROM reservas WHERE id_objeto = :id_objeto AND fecha_fin > :fecha_actual AND estado = 0");
     query.bindValue(":id_objeto", idObjeto);
     query.bindValue(":fecha_actual", QDateTime::currentDateTime());
     
@@ -514,4 +580,132 @@ bool DatabaseManager::objetoEstaReservado(int idObjeto) {
     }
     
     return false;
+}
+
+bool DatabaseManager::obtenerReservasPorUsuario(int idUsuario, QList<Reserva>& reservas) {
+    QSqlQuery query;
+    query.prepare("SELECT * FROM reservas WHERE id_usuario = :id_usuario ORDER BY fecha_reserva DESC");
+    query.bindValue(":id_usuario", idUsuario);
+    
+    if (!query.exec()) {
+        qDebug() << "Error obteniendo reservas por usuario:" << query.lastError().text();
+        return false;
+    }
+    
+    while (query.next()) {
+        Reserva reserva(
+            query.value("id").toInt(),
+            query.value("id_objeto").toInt(),
+            query.value("id_usuario").toInt(),
+            query.value("fecha_inicio").toDateTime(),
+            query.value("fecha_fin").toDateTime(),
+            query.value("fecha_reserva").toDateTime(),
+            query.value("estado").toInt()
+        );
+        reservas.append(reserva);
+    }
+    return true;
+}
+
+bool DatabaseManager::obtenerObjetoPorId(int idObjeto, Objeto& objeto) {
+    QSqlQuery query;
+    query.prepare("SELECT * FROM objetos WHERE id = :id");
+    query.bindValue(":id", idObjeto);
+    
+    if (!query.exec()) {
+        qDebug() << "Error obteniendo objeto por ID:" << query.lastError().text();
+        return false;
+    }
+    
+    if (query.next()) {
+        objeto = Objeto(
+            query.value("id").toInt(),
+            query.value("nombre").toString(),
+            query.value("categoria").toString(),
+            query.value("id_dueno").toInt(),
+            query.value("estado").toInt(),
+            query.value("descripcion").toString(),
+            query.value("tiempo_prestamo").toInt(),
+            query.value("fecha_publicacion").toDateTime()
+        );
+        return true;
+    }
+    
+    qDebug() << "Objeto no encontrado con ID:" << idObjeto;
+    return false;
+}
+
+bool DatabaseManager::cancelarReserva(int idReserva) {
+    QSqlQuery query;
+    
+    // Primero obtener el ID del objeto para actualizar su estado
+    query.prepare("SELECT id_objeto FROM reservas WHERE id = :id AND estado = 0");
+    query.bindValue(":id", idReserva);
+    
+    if (!query.exec()) {
+        qDebug() << "Error obteniendo objeto de la reserva:" << query.lastError().text();
+        return false;
+    }
+    
+    int idObjeto = -1;
+    if (query.next()) {
+        idObjeto = query.value("id_objeto").toInt();
+    } else {
+        qDebug() << "Reserva activa no encontrada con ID:" << idReserva;
+        return false;
+    }
+    
+    // Actualizar el estado de la reserva a "cancelada" (estado = 2)
+    query.prepare("UPDATE reservas SET estado = 2 WHERE id = :id");
+    query.bindValue(":id", idReserva);
+    
+    if (!query.exec()) {
+        qDebug() << "Error cancelando reserva:" << query.lastError().text();
+        return false;
+    }
+    
+    // Actualizar el estado del objeto a "disponible" (estado = 0)
+    query.prepare("UPDATE objetos SET estado = 0 WHERE id = :id");
+    query.bindValue(":id", idObjeto);
+    
+    if (!query.exec()) {
+        qDebug() << "Error actualizando estado del objeto tras cancelación:" << query.lastError().text();
+        return false;
+    }
+    
+    qDebug() << "Reserva cancelada exitosamente. ID:" << idReserva;
+    return true;
+}
+
+bool DatabaseManager::recrearBaseDatos() {
+    // Cerrar la conexión actual
+    db.close();
+    
+    // Eliminar el archivo de la base de datos
+    QString dbPath = "biblioteca_vecinal.db";
+    if (QFile::exists(dbPath)) {
+        if (!QFile::remove(dbPath)) {
+            qDebug() << "Error eliminando base de datos anterior";
+            return false;
+        }
+    }
+    
+    // Reconectar y crear las tablas nuevamente
+    if (!conectar()) {
+        return false;
+    }
+    
+    return crearTablas();
+}
+
+int DatabaseManager::obtenerUltimoIdReserva() {
+    QSqlQuery query;
+    query.prepare("SELECT last_insert_rowid()");
+    
+    if (!query.exec() || !query.next()) {
+        qDebug() << "Error obteniendo último ID de reserva:" << query.lastError().text();
+        return -1;
+    }
+    
+    return query.value(0).toInt();
 }
