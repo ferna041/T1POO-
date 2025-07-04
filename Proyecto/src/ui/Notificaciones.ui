@@ -168,7 +168,7 @@ QLabel.tipo-notificacion {
      <item>
       <widget class="QPushButton" name="btnActualizar">
        <property name="text">
-        <string>🔄 Actualizar</string>
+        <string>Actualizar</string>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
@@ -184,14 +184,14 @@ QPushButton:hover {
      <item>
       <widget class="QPushButton" name="btnMarcarLeidas">
        <property name="text">
-        <string>✓ Marcar como leídas</string>
+        <string>Marcar como leídas</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="btnEliminarTodas">
        <property name="text">
-        <string>🗑️ Eliminar todas</string>
+        <string>Eliminar todas</string>
        </property>
       </widget>
      </item>

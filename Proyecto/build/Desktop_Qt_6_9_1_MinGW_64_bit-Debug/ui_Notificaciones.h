@@ -260,9 +260,9 @@ public:
     {
         Notificaciones->setWindowTitle(QCoreApplication::translate("Notificaciones", "Notificaciones", nullptr));
         labelTitulo->setText(QCoreApplication::translate("Notificaciones", "Centro de Notificaciones", nullptr));
-        btnActualizar->setText(QCoreApplication::translate("Notificaciones", "\360\237\224\204 Actualizar", nullptr));
-        btnMarcarLeidas->setText(QCoreApplication::translate("Notificaciones", "\342\234\223 Marcar como le\303\255das", nullptr));
-        btnEliminarTodas->setText(QCoreApplication::translate("Notificaciones", "\360\237\227\221\357\270\217 Eliminar todas", nullptr));
+        btnActualizar->setText(QCoreApplication::translate("Notificaciones", "Actualizar", nullptr));
+        btnMarcarLeidas->setText(QCoreApplication::translate("Notificaciones", "Marcar como le\303\255das", nullptr));
+        btnEliminarTodas->setText(QCoreApplication::translate("Notificaciones", "Eliminar todas", nullptr));
         labelSinNotificaciones->setText(QCoreApplication::translate("Notificaciones", "\360\237\223\255 No hay notificaciones disponibles", nullptr));
     } // retranslateUi
 

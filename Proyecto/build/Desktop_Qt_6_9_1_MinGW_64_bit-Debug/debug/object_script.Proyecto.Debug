@@ -1,4 +1,5 @@
 debug/FormularioObjeto.o
+debug/GestorUsuarios.o
 debug/ListaObjetos.o
 debug/ListaReservas.o
 debug/ListaUsuarios.o
@@ -9,6 +10,7 @@ debug/mainwindow.o
 debug/FormularioUsuario.o
 debug/DatabaseManager.o
 debug/moc_FormularioObjeto.o
+debug/moc_GestorUsuarios.o
 debug/moc_ListaObjetos.o
 debug/moc_ListaReservas.o
 debug/moc_ListaUsuarios.o

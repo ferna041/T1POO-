@@ -1,4 +1,5 @@
 release/FormularioObjeto.o
+release/GestorUsuarios.o
 release/ListaObjetos.o
 release/ListaReservas.o
 release/ListaUsuarios.o
@@ -9,6 +10,7 @@ release/mainwindow.o
 release/FormularioUsuario.o
 release/DatabaseManager.o
 release/moc_FormularioObjeto.o
+release/moc_GestorUsuarios.o
 release/moc_ListaObjetos.o
 release/moc_ListaReservas.o
 release/moc_ListaUsuarios.o

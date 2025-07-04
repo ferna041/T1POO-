@@ -407,30 +407,7 @@
         <div class="content">
             <h2>4. Implementación</h2>
             
-            <h3>4.1 Estructura del Código</h3>
-            <div class="code-block">
-<span class="folder">src/</span>
-<span class="tree-line">├──</span> <span class="folder">models/</span>          <span class="comment"># Clases del modelo de dominio</span>
-<span class="tree-line">│   ├──</span> <span class="file">Usuario.h</span>    <span class="comment"># Definición de la clase Usuario</span>
-<span class="tree-line">│   ├──</span> <span class="file">Objeto.h</span>     <span class="comment"># Definición de la clase Objeto</span>
-<span class="tree-line">│   ├──</span> <span class="file">Reserva.h</span>    <span class="comment"># Definición de la clase Reserva</span>
-<span class="tree-line">│   └──</span> <span class="file">Notificacion.h</span> <span class="comment"># Definición de la clase Notificación</span>
-<span class="tree-line">├──</span> <span class="folder">database/</span>        <span class="comment"># Gestión de persistencia</span>
-<span class="tree-line">│   ├──</span> <span class="file">DatabaseManager.h</span>    <span class="comment"># Interfaz del gestor de BD</span>
-<span class="tree-line">│   └──</span> <span class="file">DatabaseManager.cpp</span>  <span class="comment"># Implementación del gestor de BD</span>
-<span class="tree-line">├──</span> <span class="folder">ui/</span>             <span class="comment"># Interfaces gráficas Qt</span>
-<span class="tree-line">│   ├──</span> <span class="file">mainwindow.*</span>         <span class="comment"># Ventana principal</span>
-<span class="tree-line">│   ├──</span> <span class="file">FormularioUsuario.*</span>  <span class="comment"># Formulario de registro de usuarios</span>
-<span class="tree-line">│   ├──</span> <span class="file">FormularioObjeto.*</span>   <span class="comment"># Formulario de publicación de objetos</span>
-<span class="tree-line">│   ├──</span> <span class="file">ListaUsuarios.*</span>      <span class="comment"># Visualización de usuarios</span>
-<span class="tree-line">│   ├──</span> <span class="file">ListaObjetos.*</span>       <span class="comment"># Catálogo de objetos</span>
-<span class="tree-line">│   ├──</span> <span class="file">ListaReservas.*</span>      <span class="comment"># Gestión de reservas</span>
-<span class="tree-line">│   ├──</span> <span class="file">VentanaUsuario.*</span>     <span class="comment"># Perfil de usuario</span>
-<span class="tree-line">│   └──</span> <span class="file">Notificaciones.*</span>     <span class="comment"># Sistema de notificaciones</span>
-<span class="tree-line">└──</span> <span class="file">main.cpp</span>        <span class="comment"># Punto de entrada de la aplicación</span>
-            </div>
-
-            <h3>4.2 Tecnologías Utilizadas</h3>
+            <h3>4.1 Tecnologías Utilizadas</h3>
             <ul>
                 <li><strong>Lenguaje:</strong> C++ con estándar C++11</li>
                 <li><strong>Framework GUI:</strong> Qt 6.9.1 con widgets</li>
@@ -439,21 +416,29 @@
                 <li><strong>Sistema de Build:</strong> qmake</li>
             </ul>
 
-            <h3>4.3 Diagramas del Sistema</h3>
-            <div class="diagram-placeholder">
-                <h4>Diagrama de Clases</h4>
-                <p>El diagrama muestra las cuatro clases principales del modelo de dominio:</p>
-                <ul style="text-align: left; display: inline-block;">
-                    <li>Usuario: con atributos id, nombre, email, teléfono, dirección, reputación, fechaRegistro, activo</li>
-                    <li>Objeto: con atributos id, nombre, categoría, idDueño, estado, descripción, fechaPublicación, tiempoPréstamo</li>
-                    <li>Reserva: con atributos id, idObjeto, idUsuario, fechaReserva, fechaInicio, fechaFin, estado</li>
-                    <li>Notificación: con atributos id, tipo, idUsuario, idReserva, mensaje, fechaCreación, leída</li>
-                </ul>
+            <h3>4.2 Diagramas del Sistema</h3>
+            
+            <h4>Diagrama de Clases</h4>
+            <p>El diagrama UML muestra las relaciones entre las clases principales del sistema y su arquitectura:</p>
+            <div style="text-align: center; margin: 24px 0;">
+                <img src="uml2.png" alt="Diagrama de Clases UML" style="max-width: 100%; height: auto; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
             </div>
-
-            <div class="diagram-placeholder">
-                <h4>Diagrama de Secuencia: Solicitar Préstamo</h4>
-                <p>Muestra la interacción entre Usuario → ListaObjetos → DatabaseManager → Reserva</p>
+            
+            <h4>Diagramas de Secuencia por Caso de Uso</h4>
+            
+            <h5>Caso de Uso 1: Registrar Usuario</h5>
+            <div style="text-align: center; margin: 24px 0;">
+                <img src="registrar.png" alt="Diagrama de Secuencia - Registrar Usuario" style="max-width: 100%; height: auto; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            </div>
+            
+            <h5>Caso de Uso 2: Publicar Objeto para Préstamo</h5>
+            <div style="text-align: center; margin: 24px 0;">
+                <img src="publicar.png" alt="Diagrama de Secuencia - Publicar Objeto" style="max-width: 100%; height: auto; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            </div>
+            
+            <h5>Caso de Uso 3: Solicitar Préstamo de Objeto</h5>
+            <div style="text-align: center; margin: 24px 0;">
+                <img src="solicitar.png" alt="Diagrama de Secuencia - Solicitar Préstamo" style="max-width: 100%; height: auto; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
             </div>
         </div>
 
@@ -463,16 +448,74 @@
             <div class="highlight">
                 <h4>Prueba 1: Registro de Usuario <span class="status-badge">✅ EXITOSO</span></h4>
                 <p>Se probó el registro de un nuevo usuario completando todos los campos requeridos. El sistema validó correctamente la información y creó el usuario con ID único. La fecha de registro se asignó automáticamente y la reputación se inicializó en 0.0 como se esperaba.</p>
+                
+                <h5>Evidencia del Registro</h5>
+                <div style="display: flex; gap: 12px; margin: 16px 0; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <p><strong>Formulario de Registro:</strong></p>
+                        <img src="prueba1.1.png" alt="Formulario de Registro de Usuario" style="width: 100%; height: auto; border: 1px solid #e5e7eb; border-radius: 6px; margin-bottom: 8px;">
+                    </div>
+                    <div style="flex: 1; min-width: 300px;">
+                        <p><strong>Usuario Registrado:</strong></p>
+                        <img src="prueba1.2.png" alt="Usuario Registrado Exitosamente" style="width: 100%; height: auto; border: 1px solid #e5e7eb; border-radius: 6px; margin-bottom: 8px;">
+                    </div>
+                </div>
+                <div style="text-align: center; margin: 16px 0;">
+                    <p><strong>Confirmación del Sistema:</strong></p>
+                    <img src="prueba1.3.png" alt="Confirmación del Registro" style="max-width: 400px; width: 100%; height: auto; border: 1px solid #e5e7eb; border-radius: 6px;">
+                </div>
             </div>
 
             <div class="highlight">
                 <h4>Prueba 2: Publicación de Objeto <span class="status-badge">✅ EXITOSO</span></h4>
                 <p>Se publicó un taladro eléctrico en la categoría "Herramientas" con tiempo de préstamo de 3 días. El sistema registró correctamente el objeto y lo marcó como disponible. El objeto apareció inmediatamente en la lista de objetos disponibles.</p>
+                
+                <h5>Evidencia de Publicación</h5>
+                <div style="display: flex; gap: 12px; margin: 16px 0; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <p><strong>Formulario de Publicación:</strong></p>
+                        <img src="prueba2.1.png" alt="Formulario de Publicación de Objeto" style="width: 100%; height: auto; border: 1px solid #e5e7eb; border-radius: 6px; margin-bottom: 8px;">
+                    </div>
+                    <div style="flex: 1; min-width: 300px;">
+                        <p><strong>Objeto en Catálogo:</strong></p>
+                        <img src="prueba2.2.png" alt="Objeto Publicado en Catálogo" style="width: 100%; height: auto; border: 1px solid #e5e7eb; border-radius: 6px; margin-bottom: 8px;">
+                    </div>
+                </div>
+                <div style="text-align: center; margin: 16px 0;">
+                    <p><strong>Lista de Mis Objetos:</strong></p>
+                    <img src="prueba2.3.png" alt="Objeto en Lista Personal" style="max-width: 500px; width: 100%; height: auto; border: 1px solid #e5e7eb; border-radius: 6px;">
+                </div>
             </div>
 
             <div class="highlight">
                 <h4>Prueba 3: Proceso de Reserva <span class="status-badge">✅ EXITOSO</span></h4>
                 <p>Un usuario solicitó el préstamo del taladro publicado. El sistema creó automáticamente la reserva, actualizó el estado del objeto a "prestado" y generó las notificaciones correspondientes para ambos usuarios.</p>
+                
+                <h5>Evidencia del Proceso de Reserva</h5>
+                <div style="display: flex; gap: 12px; margin: 16px 0; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <p><strong>Solicitud de Reserva:</strong></p>
+                        <img src="prueba3.1.png" alt="Proceso de Reserva de Objeto" style="width: 100%; height: auto; border: 1px solid #e5e7eb; border-radius: 6px; margin-bottom: 8px;">
+                    </div>
+                    <div style="flex: 1; min-width: 300px;">
+                        <p><strong>Reserva Creada:</strong></p>
+                        <img src="prueba3.2.png" alt="Reserva Exitosa" style="width: 100%; height: auto; border: 1px solid #e5e7eb; border-radius: 6px; margin-bottom: 8px;">
+                    </div>
+                </div>
+                <div style="display: flex; gap: 12px; margin: 16px 0; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <p><strong>Lista de Reservas:</strong></p>
+                        <img src="prueba3.3.png" alt="Lista de Reservas Activas" style="width: 100%; height: auto; border: 1px solid #e5e7eb; border-radius: 6px; margin-bottom: 8px;">
+                    </div>
+                    <div style="flex: 1; min-width: 300px;">
+                        <p><strong>Estado del Objeto:</strong></p>
+                        <img src="prueba3.4.png" alt="Objeto Marcado como Prestado" style="width: 100%; height: auto; border: 1px solid #e5e7eb; border-radius: 6px; margin-bottom: 8px;">
+                    </div>
+                </div>
+                <div style="text-align: center; margin: 16px 0;">
+                    <p><strong>Notificaciones Generadas:</strong></p>
+                    <img src="prueba3.5.png" alt="Sistema de Notificaciones" style="max-width: 500px; width: 100%; height: auto; border: 1px solid #e5e7eb; border-radius: 6px;">
+                </div>
             </div>
 
             <div class="test-case">
