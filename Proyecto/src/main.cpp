@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "FormularioUsuario.h"
+#include "GestorUsuarios.h"
 #include "ListaUsuarios.h"
 #include "DatabaseManager.h"
 #include "Usuario.h"
@@ -26,11 +26,8 @@ int main(int argc, char *argv[])
     }
 
     // En la función main, después de la configuración de BD:
-    FormularioUsuario *formulario = new FormularioUsuario();
-    formulario->show();
-
-    ListaUsuarios *listaUsuarios = new ListaUsuarios();
-    listaUsuarios->show();
+    GestorUsuarios *gestorUsuarios = new GestorUsuarios();
+    gestorUsuarios->show();
 
     //FormularioObjeto *formularioObjeto = new FormularioObjeto();
     //formularioObjeto->show();

@@ -26,7 +26,6 @@ private slots:
 
 private:
     void configurarTabla();
-    QPushButton* crearBotonReserva(int objetoId, int tiempoPrestamo);
 
     Ui::ListaObjetos *ui;
     DatabaseManager *db;

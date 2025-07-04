@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QDebug>
+#include <QSizePolicy>
 #include "FormularioObjeto.h"
 
 VentanaUsuario::VentanaUsuario(const Usuario& usuario, QWidget *parent)
@@ -17,6 +18,15 @@ VentanaUsuario::VentanaUsuario(const Usuario& usuario, QWidget *parent)
     , widgetNotificaciones(nullptr)
 {
     ui->setupUi(this);
+    
+    // Configurar tamaño de ventana - más grande para que el contenido se vea mejor
+    setMinimumSize(1200, 700);
+    resize(1300, 800);
+    
+    // Configurar layout principal para que el tabWidget se ajuste al tamaño de la ventana
+    QVBoxLayout *mainLayout = new QVBoxLayout(ui->centralwidget);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->addWidget(ui->tabWidget);
     
     // Configurar base de datos
     if (!db->conectar()) {
@@ -40,8 +50,10 @@ VentanaUsuario::VentanaUsuario(const Usuario& usuario, QWidget *parent)
 
     // Agregar Formulario Objeto a la pestaña publicar
     FormularioObjeto *formularioWidget = new FormularioObjeto(usuarioActual.getId());
+    
     QVBoxLayout *formLayout = new QVBoxLayout(ui->publicar);
-    formLayout->setContentsMargins(0, 0, 0, 0);
+    formLayout->setContentsMargins(50, 30, 50, 30); // Más márgenes para centrar mejor
+    formLayout->setAlignment(Qt::AlignCenter); // Centrar el contenido
     formLayout->addWidget(formularioWidget);
 
     // Agregar ListaReservas a la pestaña Mis Reservas

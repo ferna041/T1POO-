@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Vecinal de Objetos Compartidos - Informe del Proyecto</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #1a1a1a;
+            background: #fafafa;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.025em;
+        }
+
+        header .subtitle {
+            font-size: 1.2rem;
+            color: #ffffff;
+            opacity: 0.95;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        .content {
+            background: white;
+            margin-bottom: 40px;
+            border-radius: 16px;
+            padding: 48px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f3f4f6;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #374151;
+            margin: 32px 0 16px 0;
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #4b5563;
+            margin: 24px 0 12px 0;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: #4b5563;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 24px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: #4b5563;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 1px solid #bae6fd;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+
+        .highlight::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            border-radius: 12px 0 0 12px;
+        }
+
+        .requirement {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            transition: all 0.2s ease;
+        }
+
+        .requirement:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transform: translateY(-1px);
+        }
+
+        .test-case {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border: 1px solid #fde68a;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+        }
+
+        .bug-list {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+        }
+
+        .code-block {
+            background: #0f172a;
+            color: #e2e8f0;
+            border-radius: 12px;
+            padding: 32px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            overflow-x: auto;
+            margin: 24px 0;
+            border: 1px solid #1e293b;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .code-block .folder {
+            color: #60a5fa;
+            font-weight: 600;
+        }
+
+        .code-block .file {
+            color: #34d399;
+        }
+
+        .code-block .comment {
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        .code-block .tree-line {
+            color: #475569;
+        }
+
+        .diagram-placeholder {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 48px 24px;
+            text-align: center;
+            margin: 24px 0;
+            color: #64748b;
+            font-style: italic;
+        }
+
+        .diagram-placeholder h4 {
+            color: #475569;
+            margin-bottom: 12px;
+        }
+
+        .download-section {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border: 1px solid #a7f3d0;
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .download-section h2 {
+            border: none;
+            color: #065f46;
+            margin-bottom: 16px;
+        }
+
+        .download-section h3 {
+            color: #047857;
+            font-size: 1.5rem;
+            margin: 24px 0;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
+        .status-badge.error {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .architecture-note {
+            background: #f8fafc;
+            border-left: 4px solid #6366f1;
+            padding: 16px 20px;
+            margin: 24px 0;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            color: #475569;
+        }
+
+        footer {
+            background: #111827;
+            color: #9ca3af;
+            padding: 40px 0;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        footer p {
+            margin-bottom: 8px;
+            color: #9ca3af;
+        }
+
+        .tech-stack {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .tech-badge {
+            background: #374151;
+            color: #f9fafb;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 32px 24px;
+            }
+            
+            .tech-stack {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Selection color */
+        ::selection {
+            background: #667eea;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Biblioteca Vecinal de Objetos Compartidos</h1>
+            <p class="subtitle">Sistema de gestión para compartir objetos entre vecinos de una comunidad</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="content">
+            <h2>1. Descripción del Problema</h2>
+            <p>
+                En muchos hogares se compran herramientas o equipamiento puntual (taladros, escaleras, cámaras, juegos de mesa) 
+                que luego pasan la mayor parte del tiempo sin uso. Esto genera desperdicio de recursos, espacio y dinero, además 
+                de aislarnos de los vecinos. Si bien existen redes sociales como Instagram o Facebook donde se puede pedir prestado 
+                a algún amigo mediante un post, las personas no le dan ese uso a sus redes sociales.
+            </p>
+            <p>
+                No existe hoy una plataforma sencilla que permita a la comunidad publicar objetos que estén dispuestas a prestar y 
+                gestionarlos de forma transparente (fechas, estado, recordatorios). Nuestra solución cubre la necesidad de pedir 
+                prestado algo a algún vecino de la comunidad de manera responsable, confiable y formal, además de compartir recursos 
+                de forma económica y ecológica, al tiempo que fomenta el sentido de comunidad.
+            </p>
+        </div>
+
+        <div class="content">
+            <h2>2. Análisis del Sistema</h2>
+            
+            <h3>2.1 Entidades Principales</h3>
+            <p>El sistema está compuesto por las siguientes entidades:</p>
+            
+            <ul>
+                <li><strong>Usuario:</strong> Miembros de la comunidad que pueden prestar y solicitar objetos. Incluye información de perfil, dirección para la entrega, y un sistema de reputación basado en el comportamiento histórico.</li>
+                <li><strong>Objeto:</strong> Elementos que los usuarios están dispuestos a prestar. Cada objeto tiene una categoría, descripción detallada, estado actual y tiempo máximo de préstamo.</li>
+                <li><strong>Reserva:</strong> Representa la transacción de préstamo entre usuarios, incluyendo fechas de inicio y fin, responsable del préstamo y estado de la reserva.</li>
+                <li><strong>Notificación:</strong> Sistema de comunicación para informar sobre vencimientos, confirmaciones de reserva y otros eventos importantes.</li>
+            </ul>
+
+            <h3>2.2 Arquitectura del Sistema</h3>
+            <p>El sistema implementa una arquitectura orientada a objetos con patrón MVC (Modelo-Vista-Controlador):</p>
+            
+            <ul>
+                <li><strong>Modelos:</strong> Clases que representan las entidades del dominio</li>
+                <li><strong>Vistas:</strong> Interfaces gráficas desarrolladas en Qt para la interacción con el usuario</li>
+                <li><strong>Controlador:</strong> DatabaseManager que gestiona la persistencia y lógica de negocio</li>
+            </ul>
+
+            <div class="architecture-note">
+                <strong>Nota sobre la Arquitectura:</strong> El sistema utiliza Qt como framework de interfaz gráfica y SQLite 
+                como base de datos embebida. La comunicación entre capas se realiza mediante el patrón DAO (Data Access Object) 
+                implementado en la clase DatabaseManager.
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>3. Casos de Uso Principales</h2>
+            
+            <div class="requirement">
+                <h4>Caso de Uso 1: Registrar Usuario</h4>
+                <p><strong>Actor:</strong> Nuevo miembro de la comunidad</p>
+                <p><strong>Descripción:</strong> Un nuevo usuario se registra en el sistema proporcionando sus datos personales.</p>
+                <p><strong>Flujo Principal:</strong></p>
+                <ol>
+                    <li>El usuario accede al formulario de registro</li>
+                    <li>Ingresa sus datos: nombre, email, teléfono, dirección</li>
+                    <li>El sistema valida la información</li>
+                    <li>Se crea el perfil con reputación inicial de 0.0</li>
+                    <li>El usuario queda registrado y activo en el sistema</li>
+                </ol>
+            </div>
+
+            <div class="requirement">
+                <h4>Caso de Uso 2: Publicar Objeto para Préstamo</h4>
+                <p><strong>Actor:</strong> Usuario registrado (propietario)</p>
+                <p><strong>Descripción:</strong> Un usuario publica un objeto que está dispuesto a prestar a otros miembros de la comunidad.</p>
+                <p><strong>Flujo Principal:</strong></p>
+                <ol>
+                    <li>El usuario accede al formulario de publicación de objetos</li>
+                    <li>Ingresa los datos del objeto: nombre, categoría, descripción, tiempo máximo de préstamo</li>
+                    <li>El sistema valida la información</li>
+                    <li>Se registra el objeto con estado "disponible"</li>
+                    <li>El objeto aparece en la lista pública de objetos disponibles</li>
+                </ol>
+            </div>
+
+            <div class="requirement">
+                <h4>Caso de Uso 3: Solicitar Préstamo de Objeto</h4>
+                <p><strong>Actor:</strong> Usuario registrado (solicitante)</p>
+                <p><strong>Descripción:</strong> Un usuario solicita el préstamo de un objeto disponible en el sistema.</p>
+                <p><strong>Flujo Principal:</strong></p>
+                <ol>
+                    <li>El usuario consulta la lista de objetos disponibles</li>
+                    <li>Selecciona un objeto de interés</li>
+                    <li>Confirma la solicitud de préstamo</li>
+                    <li>El sistema crea una reserva automáticamente</li>
+                    <li>Se actualiza el estado del objeto a "prestado"</li>
+                    <li>Se generan notificaciones para ambos usuarios</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>4. Implementación</h2>
+            
+            <h3>4.1 Estructura del Código</h3>
+            <div class="code-block">
+<span class="folder">src/</span>
+<span class="tree-line">├──</span> <span class="folder">models/</span>          <span class="comment"># Clases del modelo de dominio</span>
+<span class="tree-line">│   ├──</span> <span class="file">Usuario.h</span>    <span class="comment"># Definición de la clase Usuario</span>
+<span class="tree-line">│   ├──</span> <span class="file">Objeto.h</span>     <span class="comment"># Definición de la clase Objeto</span>
+<span class="tree-line">│   ├──</span> <span class="file">Reserva.h</span>    <span class="comment"># Definición de la clase Reserva</span>
+<span class="tree-line">│   └──</span> <span class="file">Notificacion.h</span> <span class="comment"># Definición de la clase Notificación</span>
+<span class="tree-line">├──</span> <span class="folder">database/</span>        <span class="comment"># Gestión de persistencia</span>
+<span class="tree-line">│   ├──</span> <span class="file">DatabaseManager.h</span>    <span class="comment"># Interfaz del gestor de BD</span>
+<span class="tree-line">│   └──</span> <span class="file">DatabaseManager.cpp</span>  <span class="comment"># Implementación del gestor de BD</span>
+<span class="tree-line">├──</span> <span class="folder">ui/</span>             <span class="comment"># Interfaces gráficas Qt</span>
+<span class="tree-line">│   ├──</span> <span class="file">mainwindow.*</span>         <span class="comment"># Ventana principal</span>
+<span class="tree-line">│   ├──</span> <span class="file">FormularioUsuario.*</span>  <span class="comment"># Formulario de registro de usuarios</span>
+<span class="tree-line">│   ├──</span> <span class="file">FormularioObjeto.*</span>   <span class="comment"># Formulario de publicación de objetos</span>
+<span class="tree-line">│   ├──</span> <span class="file">ListaUsuarios.*</span>      <span class="comment"># Visualización de usuarios</span>
+<span class="tree-line">│   ├──</span> <span class="file">ListaObjetos.*</span>       <span class="comment"># Catálogo de objetos</span>
+<span class="tree-line">│   ├──</span> <span class="file">ListaReservas.*</span>      <span class="comment"># Gestión de reservas</span>
+<span class="tree-line">│   ├──</span> <span class="file">VentanaUsuario.*</span>     <span class="comment"># Perfil de usuario</span>
+<span class="tree-line">│   └──</span> <span class="file">Notificaciones.*</span>     <span class="comment"># Sistema de notificaciones</span>
+<span class="tree-line">└──</span> <span class="file">main.cpp</span>        <span class="comment"># Punto de entrada de la aplicación</span>
+            </div>
+
+            <h3>4.2 Tecnologías Utilizadas</h3>
+            <ul>
+                <li><strong>Lenguaje:</strong> C++ con estándar C++11</li>
+                <li><strong>Framework GUI:</strong> Qt 6.9.1 con widgets</li>
+                <li><strong>Base de Datos:</strong> SQLite 3 embebida</li>
+                <li><strong>Entorno de Desarrollo:</strong> Qt Creator</li>
+                <li><strong>Sistema de Build:</strong> qmake</li>
+            </ul>
+
+            <h3>4.3 Diagramas del Sistema</h3>
+            <div class="diagram-placeholder">
+                <h4>Diagrama de Clases</h4>
+                <p>El diagrama muestra las cuatro clases principales del modelo de dominio:</p>
+                <ul style="text-align: left; display: inline-block;">
+                    <li>Usuario: con atributos id, nombre, email, teléfono, dirección, reputación, fechaRegistro, activo</li>
+                    <li>Objeto: con atributos id, nombre, categoría, idDueño, estado, descripción, fechaPublicación, tiempoPréstamo</li>
+                    <li>Reserva: con atributos id, idObjeto, idUsuario, fechaReserva, fechaInicio, fechaFin, estado</li>
+                    <li>Notificación: con atributos id, tipo, idUsuario, idReserva, mensaje, fechaCreación, leída</li>
+                </ul>
+            </div>
+
+            <div class="diagram-placeholder">
+                <h4>Diagrama de Secuencia: Solicitar Préstamo</h4>
+                <p>Muestra la interacción entre Usuario → ListaObjetos → DatabaseManager → Reserva</p>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>5. Resultados de Pruebas</h2>
+            
+            <div class="highlight">
+                <h4>Prueba 1: Registro de Usuario <span class="status-badge">✅ EXITOSO</span></h4>
+                <p>Se probó el registro de un nuevo usuario completando todos los campos requeridos. El sistema validó correctamente la información y creó el usuario con ID único. La fecha de registro se asignó automáticamente y la reputación se inicializó en 0.0 como se esperaba.</p>
+            </div>
+
+            <div class="highlight">
+                <h4>Prueba 2: Publicación de Objeto <span class="status-badge">✅ EXITOSO</span></h4>
+                <p>Se publicó un taladro eléctrico en la categoría "Herramientas" con tiempo de préstamo de 3 días. El sistema registró correctamente el objeto y lo marcó como disponible. El objeto apareció inmediatamente en la lista de objetos disponibles.</p>
+            </div>
+
+            <div class="highlight">
+                <h4>Prueba 3: Proceso de Reserva <span class="status-badge">✅ EXITOSO</span></h4>
+                <p>Un usuario solicitó el préstamo del taladro publicado. El sistema creó automáticamente la reserva, actualizó el estado del objeto a "prestado" y generó las notificaciones correspondientes para ambos usuarios.</p>
+            </div>
+
+            <div class="test-case">
+                <h4>Casos de Prueba Ejecutados</h4>
+                <ul>
+                    <li><strong>Test 1:</strong> Registro completo con datos válidos</li>
+                    <li><strong>Test 2:</strong> Publicación de objeto con categorización</li>
+                    <li><strong>Test 3:</strong> Flujo completo de reserva</li>
+                    <li><strong>Test 4:</strong> Gestión de estados y notificaciones</li>
+                </ul>
+            </div>
+
+            <div class="bug-list">
+                <h4>Limitaciones Identificadas</h4>
+                <ul>
+                    <li>Sistema de reputación dinámico no implementado completamente</li>
+                    <li>Búsqueda y filtros avanzados pendientes</li>
+                    <li>Recordatorios automáticos por implementar</li>
+                    <li>Visualización de calendario no incluida</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="download-section">
+            <h2>📦 Descarga del Proyecto</h2>
+            <p>El código fuente completo está disponible para descarga</p>
+            
+            <h3>Contenido Incluido</h3>
+            <ul style="text-align: left; display: inline-block;">
+                <li>Código fuente completo (carpeta src/)</li>
+                <li>Archivo de proyecto Qt (Proyecto.pro)</li>
+                <li>Documentación y esquemas de base de datos</li>
+                <li>Instrucciones de compilación</li>
+            </ul>
+
+            <h4>Requisitos del Sistema</h4>
+            <ul style="text-align: left; display: inline-block;">
+                <li>Qt Framework 6.9.1 o superior</li>
+                <li>MinGW 64-bit compiler</li>
+                <li>SQLite 3 (incluido con Qt)</li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>Biblioteca Vecinal de Objetos Compartidos</p>
+            <p>Sistema de gestión comunitaria desarrollado en C++</p>
+            <div class="tech-stack">
+                <span class="tech-badge">C++</span>
+                <span class="tech-badge">Qt Framework</span>
+                <span class="tech-badge">SQLite</span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

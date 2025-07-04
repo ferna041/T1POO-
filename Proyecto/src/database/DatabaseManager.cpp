@@ -23,8 +23,24 @@ bool DatabaseManager::conectar() {
     // Crear conexión SQLite
     db = QSqlDatabase::addDatabase("QSQLITE");
     
-    // Nombre del archivo de base de datos
-    db.setDatabaseName("biblioteca_vecinal.db");
+    // Definir ruta específica para la base de datos
+    QString rutaProyecto = "c:/Users/Seba4/OneDrive/Escritorio/Seba/U/POOPOO/Tareas/Proyecto/";
+    QString rutaBaseDatos = rutaProyecto + "data/biblioteca_vecinal.db";
+    
+    // Crear directorio data si no existe
+    QDir dir;
+    QString directorioData = rutaProyecto + "data";
+    if (!dir.exists(directorioData)) {
+        if (!dir.mkpath(directorioData)) {
+            qDebug() << "Error al crear directorio data:" << directorioData;
+            return false;
+        }
+    }
+    
+    // Configurar ruta de la base de datos
+    db.setDatabaseName(rutaBaseDatos);
+    
+    qDebug() << "Intentando conectar a base de datos en:" << rutaBaseDatos;
     
     // Intentar abrir la conexión
     if (!db.open()) {
@@ -32,7 +48,11 @@ bool DatabaseManager::conectar() {
         return false;
     }
     
-    qDebug() << "Base de datos conectada exitosamente";
+    qDebug() << "Base de datos conectada exitosamente en:" << rutaBaseDatos;
+    
+    // Crear tablas si no existen
+    crearTablas();
+    
     return true;
 }
 

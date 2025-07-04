@@ -3,6 +3,7 @@
 #include <QPushButton>
 #include <QMessageBox>
 #include <QHeaderView>
+#include <QHBoxLayout>
 
 ListaObjetos::ListaObjetos(QWidget *parent)
     : QWidget(parent)
@@ -78,11 +79,11 @@ void ListaObjetos::configurarTabla()
         ui->tableWidgetObjetos->setColumnWidth(1, 130);  // Categoría (mínimo)
         ui->tableWidgetObjetos->setColumnWidth(2, 280);  // Descripción (mínimo)
         ui->tableWidgetObjetos->setColumnWidth(3, 200);  // Tiempo Préstamo (mínimo)
-        ui->tableWidgetObjetos->setColumnWidth(4, 100);  // Acción (mínimo)
+        ui->tableWidgetObjetos->setColumnWidth(4, 120);  // Acción (mínimo, más ancho para el botón)
     }
     
-    // Configurar altura de filas - Altura optimizada
-    ui->tableWidgetObjetos->verticalHeader()->setDefaultSectionSize(40);
+    // Configurar altura de filas - Altura aumentada para botones más cómodos
+    ui->tableWidgetObjetos->verticalHeader()->setDefaultSectionSize(50);
     
     // Configurar header vertical (números de fila) - Ocultar completamente
     ui->tableWidgetObjetos->verticalHeader()->setVisible(false);
@@ -142,9 +143,42 @@ void ListaObjetos::cargarObjetos(){
         
         // Agregar botón de reserva solo en el catálogo
         if (!mostrarSoloMisObjetos) {
-            QPushButton* botonReserva = crearBotonReserva(objeto.getId(), objeto.getTiempoPrestamo());
-            ui->tableWidgetObjetos->setCellWidget(i, 4, botonReserva);
+            // Crear widget contenedor para centrar el botón
+            QWidget *contenedor = new QWidget();
+            QHBoxLayout *layout = new QHBoxLayout(contenedor);
+            
+            QPushButton *btnReservar = new QPushButton("Reservar");
+            btnReservar->setProperty("idObjeto", objeto.getId());
+            btnReservar->setProperty("tiempoPrestamo", objeto.getTiempoPrestamo());
+            btnReservar->setFixedSize(80, 30);
+            btnReservar->setStyleSheet(
+                "QPushButton { "
+                "   background-color: #27ae60; "
+                "   color: white; "
+                "   border: none; "
+                "   border-radius: 4px; "
+                "   font-weight: bold; "
+                "   font-size: 12px; "
+                "} "
+                "QPushButton:hover { "
+                "   background-color: #229954; "
+                "} "
+                "QPushButton:pressed { "
+                "   background-color: #1e8449; "
+                "}"
+            );
+            connect(btnReservar, &QPushButton::clicked, this, &ListaObjetos::reservarObjeto);
+            
+            // Configurar layout para centrar el botón
+            layout->addWidget(btnReservar);
+            layout->setAlignment(Qt::AlignCenter);
+            layout->setContentsMargins(5, 5, 5, 5);
+            
+            ui->tableWidgetObjetos->setCellWidget(i, 4, contenedor);
         }
+        
+        // Establecer altura de fila para que los botones se vean proporcionados
+        ui->tableWidgetObjetos->setRowHeight(i, 50);
     }
 }
 
@@ -153,33 +187,21 @@ void ListaObjetos::on_pushButtonActualizar_clicked()
     cargarObjetos();
 }
 
-QPushButton* ListaObjetos::crearBotonReserva(int objetoId, int tiempoPrestamo)
-{
-    QPushButton* boton = new QPushButton("Reservar");
-    boton->setMinimumSize(80, 25);
-    boton->setMaximumSize(80, 25);
-    boton->setStyleSheet("QPushButton { background-color: #4CAF50; color: white; border: none; border-radius: 3px; }"
-                         "QPushButton:hover { background-color: #45a049; }"
-                         "QPushButton:pressed { background-color: #3d8b40; }");
-    
-    // Conectar el botón con el slot, pasando el ID del objeto y tiempo de préstamo
-    connect(boton, &QPushButton::clicked, [this, objetoId, tiempoPrestamo]() {
-        // Crear una reserva en la base de datos
-        if (db->crearReserva(objetoId, usuarioActualId, tiempoPrestamo)) {
-            QMessageBox::information(this, "Éxito", 
-                QString("Objeto reservado correctamente por %1 días").arg(tiempoPrestamo));
-            // Recargar la tabla para quitar el objeto reservado
-            cargarObjetos();
-        } else {
-            QMessageBox::warning(this, "Error", "No se pudo reservar el objeto");
-        }
-    });
-    
-    return boton;
-}
-
 void ListaObjetos::reservarObjeto()
 {
-    // Este método puede ser usado para futuras funcionalidades
-    // Por ahora, la lógica está en el lambda del botón
+    QPushButton *btn = qobject_cast<QPushButton*>(sender());
+    if (!btn) return;
+    
+    int idObjeto = btn->property("idObjeto").toInt();
+    int tiempoPrestamo = btn->property("tiempoPrestamo").toInt();
+    
+    // Crear una reserva en la base de datos
+    if (db->crearReserva(idObjeto, usuarioActualId, tiempoPrestamo)) {
+        QMessageBox::information(this, "Éxito", 
+            QString("Objeto reservado correctamente por %1 días").arg(tiempoPrestamo));
+        // Recargar la tabla para quitar el objeto reservado
+        cargarObjetos();
+    } else {
+        QMessageBox::warning(this, "Error", "No se pudo reservar el objeto");
+    }
 }
