@@ -23,8 +23,8 @@ bool DatabaseManager::conectar() {
     // Crear conexión SQLite
     db = QSqlDatabase::addDatabase("QSQLITE");
     
-    // Definir ruta específica para la base de datos
-    QString rutaProyecto = "c:/Users/Seba4/OneDrive/Escritorio/Seba/U/POOPOO/Tareas/Proyecto/";
+    // Definir ruta relativa para la base de datos
+    QString rutaProyecto = QDir::currentPath() + "/";
     QString rutaBaseDatos = rutaProyecto + "data/biblioteca_vecinal.db";
     
     // Crear directorio data si no existe
