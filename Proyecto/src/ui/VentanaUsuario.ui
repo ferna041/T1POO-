@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>VentanaUsuario</class>
+ <widget class="QMainWindow" name="VentanaUsuario">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1300</width>
+    <height>850</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1300</width>
+      <height>850</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="catalogo">
+     <property name="styleSheet">
+      <string notr="true">QWidget#catalogo {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #f8f9fa, stop: 1 #e9ecef);
+    color: #212529;
+}</string>
+     </property>
+     <attribute name="title">
+      <string>Catálogo</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="publicar">
+     <property name="styleSheet">
+      <string notr="true">QWidget#publicar {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #f8f9fa, stop: 1 #e9ecef);
+    color: #212529;
+}</string>
+     </property>
+     <attribute name="title">
+      <string>Publicar</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="tab_2">
+     <property name="styleSheet">
+      <string notr="true">QWidget#tab_2 {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #f8f9fa, stop: 1 #e9ecef);
+    color: #212529;
+}</string>
+     </property>
+     <attribute name="title">
+      <string>Mis Objetos</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="reservas">
+     <property name="styleSheet">
+      <string notr="true">QWidget#reservas {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #f8f9fa, stop: 1 #e9ecef);
+    color: #212529;
+}</string>
+     </property>
+     <attribute name="title">
+      <string>Mis reservas</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="Notificaciones">
+     <property name="styleSheet">
+      <string notr="true">QWidget#Notificaciones {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #f8f9fa, stop: 1 #e9ecef);
+    color: #212529;
+}</string>
+     </property>
+     <attribute name="title">
+      <string>Notificaciones</string>
+     </attribute>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1300</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

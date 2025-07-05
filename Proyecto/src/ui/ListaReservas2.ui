@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ListaReservas</class>
+ <widget class="QWidget" name="ListaReservas">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget#ListaReservas {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #f8f9fa, stop: 1 #e9ecef);
+    border: none;
+    color: #212529;
+}</string>
+  </property>
+  <property name="windowTitle">
+   <string>Mis Reservas</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>15</number>
+   </property>
+   <property name="leftMargin">
+    <number>20</number>
+   </property>
+   <property name="topMargin">
+    <number>20</number>
+   </property>
+   <property name="rightMargin">
+    <number>20</number>
+   </property>
+   <property name="bottomMargin">
+    <number>20</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="labelTitulo">
+     <property name="styleSheet">
+      <string notr="true">QLabel {
+    font: 700 18pt "Segoe UI";
+    color: #2c3e50;
+    background: transparent;
+    padding: 5px 10px;
+    border-radius: 8px;
+}</string>
+     </property>
+     <property name="text">
+      <string>Mis Reservas</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="widgetContenedor" native="true">
+     <property name="styleSheet">
+      <string notr="true">QWidget#widgetContenedor {
+    background-color: rgba(255, 255, 255, 240);
+    border: 2px solid #dee2e6;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayoutTabla">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>15</number>
+      </property>
+      <property name="topMargin">
+       <number>15</number>
+      </property>
+      <property name="rightMargin">
+       <number>15</number>
+      </property>
+      <property name="bottomMargin">
+       <number>15</number>
+      </property>
+      <item>
+       <widget class="QTableWidget" name="tableWidgetReservas">
+        <property name="styleSheet">
+         <string notr="true">QTableWidget {
+    background-color: #ffffff;
+    alternate-background-color: #f8f9fa;
+    selection-background-color: #e3f2fd;
+    selection-color: #1976d2;
+    border: none;
+    gridline-color: #e9ecef;
+    font: 11pt "Segoe UI";
+    outline: none;
+    color: #212529;
+}
+
+QTableWidget QHeaderView {
+    background-color: #ffffff;
+    border: none;
+}
+
+QTableWidget QHeaderView::section {
+    background-color: #ffffff;
+}
+
+QTableWidget::item {
+    padding: 12px 10px;
+    border: none;
+    border-bottom: 1px solid #f1f3f4;
+    color: #212529;
+    background-color: #ffffff;
+}
+
+QTableWidget::item:alternate {
+    background-color: #f8f9fa;
+    color: #212529;
+}
+
+QTableWidget::item:selected {
+    background-color: #e8f4fd;
+    color: #1565c0;
+}
+
+QTableWidget::item:hover {
+    background-color: #f5f5f5;
+    color: #212529;
+}
+
+QTableWidget::item:selected:hover {
+    background-color: #e3f2fd;
+    color: #1565c0;
+}
+
+QHeaderView::section {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #f8f9fa, stop: 1 #e9ecef);
+    color: #495057;
+    padding: 15px 10px;
+    border: none;
+    font: bold 11pt "Segoe UI";
+    border-right: 1px solid #dee2e6;
+    border-bottom: 2px solid #dee2e6;
+    min-height: 40px;
+}
+
+QHeaderView::section:last {
+    border-right: none;
+}
+
+QHeaderView::section:first {
+    border-top-left-radius: 8px;
+}
+
+QHeaderView::section:last {
+    border-top-right-radius: 8px;
+}
+
+QHeaderView::section:vertical {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    border: none;
+    border-bottom: 1px solid #dee2e6;
+    padding: 8px;
+    font: 10pt "Segoe UI";
+    text-align: center;
+    min-width: 40px;
+}
+
+QTableWidget::corner-button {
+    background-color: #ffffff;
+    border: none;
+}
+
+QTableWidget QTableCornerButton::section {
+    background-color: #ffffff;
+    border: none;
+}
+
+QScrollBar:vertical {
+    background: #f8f9fa;
+    width: 12px;
+    border-radius: 6px;
+    margin: 2px;
+}
+
+QScrollBar::handle:vertical {
+    background: #dee2e6;
+    border-radius: 6px;
+    min-height: 20px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #adb5bd;
+}
+
+QScrollBar:horizontal {
+    background: #f8f9fa;
+    height: 12px;
+    border-radius: 6px;
+    margin: 2px;
+}
+
+QScrollBar::handle:horizontal {
+    background: #dee2e6;
+    border-radius: 6px;
+    min-width: 20px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background: #adb5bd;
+}</string>
+        </property>
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <property name="sortingEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonActualizar">
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #6c757d, stop: 1 #495057);
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font: bold 11pt "Segoe UI";
+    padding: 8px 16px;
+}
+
+QPushButton:hover {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #5a6268, stop: 1 #343a40);
+}
+
+QPushButton:pressed {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #495057, stop: 1 #212529);
+}</string>
+          </property>
+          <property name="text">
+           <string>Actualizar</string>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>30</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
